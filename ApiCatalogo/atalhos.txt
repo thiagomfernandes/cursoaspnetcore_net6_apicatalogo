@@ -1,0 +1,8 @@
+﻿dotnet ef
+#se nao existir, precisa isntalar pra criar o database a partir dos models
+
+dotnet tool install --global dotnet-ef
+
+dotnet ef migrations add NOMEMIGRATION
+
+dotnet ef database update
