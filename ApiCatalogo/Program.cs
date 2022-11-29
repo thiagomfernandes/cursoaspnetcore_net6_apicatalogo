@@ -1,4 +1,5 @@
 using ApiCatalogo.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -14,9 +15,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 string mysqlConnStr = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApiCatalogoContext>(options =>
+builder.Services.AddDbContext<ApiCatalogoDbContext>(options =>
         options.UseMySql(mysqlConnStr, ServerVersion.AutoDetect(mysqlConnStr))
     );
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApiCatalogoDbContext>()
+    .AddDefaultTokenProviders();
 
 
 var app = builder.Build();
@@ -29,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

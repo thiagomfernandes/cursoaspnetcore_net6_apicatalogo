@@ -11,26 +11,25 @@ namespace ApiCatalogo.Controllers
     public class CategoriasController : ControllerBase
     {
 
-        private readonly ApiCatalogoContext _context;
+        private readonly ApiCatalogoDbContext _context;
 
-        public CategoriasController(ApiCatalogoContext context)
+        public CategoriasController(ApiCatalogoDbContext context)
         {
             _context = context;
         }
 
         [HttpGet("produtos")]
-        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos()
+        public async Task<ActionResult<IEnumerable<Categoria>>> GetCategoriasProdutos()
         {
-            return _context.Categorias.Include(p => p.Produtos).AsNoTracking().ToList();
+            return await _context.Categorias.Include(p => p.Produtos).AsNoTracking().ToListAsync();
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Categoria>> Get()
+        public async Task<ActionResult<IEnumerable<Categoria>>> Get()
         {
             try
             {
-                throw new Exception("erro erro erro");
-                var categorias = _context.Categorias.AsNoTracking().ToList();
+                var categorias = await _context.Categorias.AsNoTracking().ToListAsync();
                 if (categorias is null)
                     return NotFound("Nenhuma categoria no DB");
                 return categorias;
@@ -43,9 +42,9 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpGet("{id:int}", Name = "GetCategoria")]
-        public ActionResult<Categoria> Get(int id)
+        public async Task<ActionResult<Categoria>> Get(int id)
         {
-            var categoria = _context.Categorias.AsNoTracking().FirstOrDefault(p => p.CategoriaId == id);
+            var categoria = await _context.Categorias.AsNoTracking().FirstOrDefaultAsync(p => p.CategoriaId == id);
             if (categoria is null)
                 return NotFound("Categoria não encontrada");
             return categoria;
@@ -53,19 +52,19 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(Categoria categoria)
+        public async Task<ActionResult> Post(Categoria categoria)
         {
             if (categoria is null)
                 return BadRequest();
 
             _context.Categorias.Add(categoria);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return new CreatedAtRouteResult("GetCategoria", new { id = categoria.CategoriaId }, categoria);
         }
 
         [HttpPut("{id:int}")]
-        public ActionResult Put(int id, Categoria categoria)
+        public async Task<ActionResult> Put(int id, Categoria categoria)
         {
             if (id != categoria.CategoriaId)
             {
@@ -73,20 +72,20 @@ namespace ApiCatalogo.Controllers
             }
             _context.Update(categoria);
             // _context.Entry(categoria).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(categoria);
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var categoria = _context.Categorias.FirstOrDefault(p => p.CategoriaId == id);
+            var categoria = await _context.Categorias.FirstOrDefaultAsync(p => p.CategoriaId == id);
             if (categoria is null)
                 return NotFound("Categoria não encontrada");
 
             _context.Categorias.Remove(categoria);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(categoria);
         }

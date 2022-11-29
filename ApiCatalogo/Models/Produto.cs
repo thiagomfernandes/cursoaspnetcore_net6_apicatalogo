@@ -21,7 +21,11 @@ public class Produto
     [Required]
     [StringLength(500)]
     public string? ImagemUrl { get; set; }
+
+    [JsonIgnore]
     public float Estoque { get; set; }
+
+    [JsonIgnore]
     public DateTime DataCadastro { get; set; }
     public int CategoriaId { get; set; }
     

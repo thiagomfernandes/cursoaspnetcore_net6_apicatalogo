@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ApiCatalogo.Migrations
 {
-    [DbContext(typeof(ApiCatalogoContext))]
+    [DbContext(typeof(ApiCatalogoDbContext))]
     [Migration("20221123001654_InsertCategorias2")]
     partial class InsertCategorias2
     {
