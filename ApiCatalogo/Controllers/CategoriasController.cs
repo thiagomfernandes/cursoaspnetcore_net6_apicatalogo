@@ -34,13 +34,11 @@ namespace ApiCatalogo.Controllers
             try
             {
                 var categorias = await _context.Categorias.AsNoTracking().ToListAsync();
-                if (categorias is null)
-                    return NotFound("Nenhuma categoria no DB");
                 return categorias;
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Ocorreu um erro, entre em contato com o TI");
+                return BadRequest();
             }
 
         }
@@ -82,7 +80,7 @@ namespace ApiCatalogo.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult<Categoria>> Delete(int id)
         {
             var categoria = await _context.Categorias.FirstOrDefaultAsync(p => p.CategoriaId == id);
             if (categoria is null)
