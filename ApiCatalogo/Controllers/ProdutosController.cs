@@ -1,6 +1,8 @@
 ﻿using ApiCatalogo.Context;
 using ApiCatalogo.Models;
 using ApiCatalogo.Pagination;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,8 +11,11 @@ using System.Text.Json.Serialization;
 
 namespace ApiCatalogo.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [EnableCors("AllowExternalGet")]
     public class ProdutosController : ControllerBase
     {
 

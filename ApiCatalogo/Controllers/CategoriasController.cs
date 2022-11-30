@@ -1,5 +1,7 @@
 ﻿using ApiCatalogo.Context;
 using ApiCatalogo.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,8 @@ namespace ApiCatalogo.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [EnableCors("AllowExternalGet")]
     public class CategoriasController : ControllerBase
     {
 
